@@ -19,6 +19,14 @@ app.get("/", (req, res) => {
     res.send('<h1>Ecco la home della API della nostra pizzeria</h1>')
 })
 
+// impostiamo la rotta di test fake ricerca
+app.get("/ricerca", (req, res) => {
+    const termine = req.query.termine;
+    const page = req.query.page;
+
+    res.send(`Hai ricercato il termine ${termine}, alla pagina numero ${page}`)
+})
+
 // rotte per le pizze
 app.use("/pizzas", pizzaRouter);
 
