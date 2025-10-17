@@ -14,10 +14,13 @@ const menu = [
     }, {
         name: "Bufalina",
         image: "imgs/pizze/bufalina.jpeg",
-        ingredients: ["pomodoro", "mozzarella di bufala"],
+        ingredients: ["pomodoro", "mozzarella di bufala", "origano"]
     }, {
         name: "4 formaggi",
         image: "imgs/pizze/4_formaggi.jpeg",
         ingredients: ["pomodoro", "mozzarella", "gorgonzola", "parmigiano", "ricotta"],
     }
 ];
+
+
+module.exports = menu;
