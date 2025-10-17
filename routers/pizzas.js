@@ -26,7 +26,27 @@ router.get('/', function (req, res) {
 });
 // show
 router.get('/:id', function (req, res) {
-    res.send('Dettagli della pizza ' + req.params.id);
+    // recuperiamo l'id dall' URL e trasformiamolo in numero
+    const id = parseInt(req.params.id)
+
+    // cerchiamo il pizza tramite id
+    const pizza = menu.find(pizza => pizza.id === id);
+
+    // Facciamo il controllo
+    if (!pizza) {
+
+        //Imposto lo status 404
+        res.status(404)
+
+        // Restituisco un JSON con le altre informazioni
+        return res.json({
+            error: "Not Found",
+            message: "Pizza non trovata"
+        })
+    }
+
+    // Restituiamolo sotto forma di JSON   
+    res.json(pizza);
 });
 // store
 router.post('/', function (req, res) {
