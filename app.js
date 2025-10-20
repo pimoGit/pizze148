@@ -11,6 +11,11 @@ const pizzaRouter = require("./routers/pizzas")
 // usiamo il middleware static di express (per rendere disponibile i file statici)
 app.use(express.static('public'));
 
+// rotte per le pizze
+app.use("/pizzas", pizzaRouter);
+
+// registro il body-parser per "application/json"
+app.use(express.json());
 
 // impostiamo la rotta di home
 app.get("/", (req, res) => {
@@ -27,8 +32,7 @@ app.get("/ricerca", (req, res) => {
     res.send(`Hai ricercato il termine ${termine}, alla pagina numero ${page}`)
 })
 
-// rotte per le pizze
-app.use("/pizzas", pizzaRouter);
+
 
 
 

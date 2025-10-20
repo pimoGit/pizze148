@@ -1,6 +1,7 @@
 // importiamo i dati della risorsa
 const menu = require('../data/menu');
 
+//  INDEX
 function index(req, res) {
     //Inizialmente, il menu filtrato corrisponde a quello originale
     let filteredMenu = menu;
@@ -17,6 +18,7 @@ function index(req, res) {
     res.json(filteredMenu);
 }
 
+// SHOW
 function show(req, res) {
     // recuperiamo l'id dall' URL e trasformiamolo in numero
     const id = parseInt(req.params.id)
@@ -41,18 +43,42 @@ function show(req, res) {
     res.json(pizza);
 }
 
+// STORE
 function store(req, res) {
-    res.send('Creazione nuova pizza');
+    // Creiamo un nuovo id incrementando l'ultimo id presente
+    const newId = menu[menu.length - 1].id + 1;
+
+    // Creiamo un nuovo oggetto pizza
+    const newPizza = {
+        id: newId,
+        name: req.body.name,
+        image: req.body.image,
+        ingredients: req.body.ingredients
+    }
+
+    // Aggiungiamo la nuova pizza al menu
+    menu.push(newPizza);
+
+    // controlliamo
+    console.log(menu);
+
+
+    // Restituiamo lo status corretto e la pizza appena creata
+    res.status(201);
+    res.json(newPizza);
 }
 
+// UPDATE
 function update(req, res) {
     res.send('Modifica integrale della pizza ' + req.params.id);
 }
 
+// MODIFY
 function modify(req, res) {
     res.send('Modifica parziale della pizza ' + req.params.id);
 }
 
+// DESTROY
 function destroy(req, res) {
     // recuperiamo l'id dall' URL e trasformiamolo in numero
     const id = parseInt(req.params.id)
