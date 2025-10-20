@@ -100,7 +100,32 @@ function update(req, res) {
 
 // MODIFY
 function modify(req, res) {
-    res.send('Modifica parziale della pizza ' + req.params.id);
+    // recuperiamo l'id dall' URL e trasformiamolo in numero
+    const id = parseInt(req.params.id)
+
+    // cerchiamo il pizza tramite id
+    const pizza = menu.find(pizza => pizza.id === id);
+
+    // Piccolo controllo
+    if (!pizza) {
+        res.status(404);
+
+        return res.json({
+            error: "Not Found",
+            message: "Pizza non trovata"
+        })
+    }
+
+    // Aggiorniamo la pizza
+    req.body.name ? pizza.name = req.body.name : pizza.name = pizza.name;
+    req.body.image ? pizza.image = req.body.image : pizza.image = pizza.image;
+    req.body.ingredients ? pizza.ingredients = req.body.ingredients : pizza.ingredients = pizza.ingredients;
+
+    // Controlliamo il menu
+    console.log(menu)
+
+    // Restituiamo la pizza appena aggiornata
+    res.json(pizza);
 }
 
 // DESTROY
