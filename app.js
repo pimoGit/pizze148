@@ -13,6 +13,9 @@ const pizzaRouter = require("./routers/pizzas")
 
 // importiamo globalmente il middleware di gestione errore server
 const errorServer = require("./middlewares/errorServer");
+// importiamo globalmente il middleware di gestione 404 per rotta inesistente
+const notFound = require("./middlewares/notFound");
+
 
 // usiamo il middleware static di express (per rendere disponibile i file statici)
 app.use(express.static('public'));
@@ -45,6 +48,9 @@ app.get("/ricerca", (req, res) => {
 
 // richiamo middleware gestione errori server
 app.use(errorServer);
+
+// richiamo middleware gestione errore 404 rotta non esistente
+app.use(notFound);
 
 
 
