@@ -7,10 +7,15 @@ const router = express.Router();
 // importiamo il controller della risorsa
 const pizzaController = require('../controllers/pizzaController');
 
+// importiamo il middleware di checkTime
+const checkTime = require("../middlewares/checkTime");
+
+// registrato per le rotte di questo router
+// router.use(checkTime)
 
 // Rotte di CRUD sulla risorsa pizze
 // index
-router.get('/', pizzaController.index);
+router.get('/', checkTime, pizzaController.index);
 
 // show
 router.get('/:id', pizzaController.show);
