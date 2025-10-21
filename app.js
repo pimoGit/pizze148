@@ -8,19 +8,23 @@ const port = 3000;
 // importiamo modulo router pizze
 const pizzaRouter = require("./routers/pizzas")
 
+// importiamo il middleware di checkTime
+const checkTime = require("./middlewares/checkTime");
+
 // usiamo il middleware static di express (per rendere disponibile i file statici)
 app.use(express.static('public'));
 
-
-
 // registro il body-parser per "application/json"
 app.use(express.json());
+
+//middleware chekTime registrato per tutte le rotte a livello globale
+// app.use(checkTime)
 
 // rotte per le pizze
 app.use("/pizzas", pizzaRouter);
 
 // impostiamo la rotta di home
-app.get("/", (req, res) => {
+app.get("/", checkTime, (req, res) => {
     console.log("hai richiesto la rotta di index");
 
     res.send('<h1>Ecco la home della API della nostra pizzeria</h1>')
