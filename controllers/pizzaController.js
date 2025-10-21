@@ -3,6 +3,7 @@ const menu = require('../data/menu');
 
 //  INDEX
 function index(req, res) {
+    paperino.get();
     //Inizialmente, il menu filtrato corrisponde a quello originale
     let filteredMenu = menu;
 

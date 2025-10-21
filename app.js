@@ -11,6 +11,9 @@ const pizzaRouter = require("./routers/pizzas")
 // importiamo il middleware di checkTime
 // const checkTime = require("./middlewares/checkTime");
 
+// importiamo globalmente il middleware di gestione errore server
+const errorServer = require("./middlewares/errorServer");
+
 // usiamo il middleware static di express (per rendere disponibile i file statici)
 app.use(express.static('public'));
 
@@ -19,6 +22,7 @@ app.use(express.json());
 
 //middleware chekTime registrato per tutte le rotte a livello globale
 // app.use(checkTime)
+
 
 // rotte per le pizze
 app.use("/pizzas", pizzaRouter);
@@ -39,6 +43,8 @@ app.get("/ricerca", (req, res) => {
 })
 
 
+// richiamo middleware gestione errori server
+app.use(errorServer);
 
 
 
