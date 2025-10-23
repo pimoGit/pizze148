@@ -9,7 +9,7 @@ const port = 3000;
 const pizzaRouter = require("./routers/pizzas")
 
 // importiamo il middleware di checkTime
-// const checkTime = require("./middlewares/checkTime");
+const checkTime = require("./middlewares/checkTime");
 
 // importiamo globalmente il middleware di gestione errore server
 const errorServer = require("./middlewares/errorServer");
@@ -28,7 +28,7 @@ app.use(express.json());
 
 
 // rotte per le pizze
-app.use("/pizzas", pizzaRouter);
+app.use("/pizzas", checkTime, pizzaRouter);
 
 // impostiamo la rotta di home
 app.get("/", (req, res) => {
@@ -49,7 +49,7 @@ app.get("/ricerca", (req, res) => {
 // richiamo middleware gestione errori server
 app.use(errorServer);
 
-// richiamo middleware gestione errore 404 rotta non esistente
+// richiamo middleware gestione errore 404 rotta inesistente
 app.use(notFound);
 
 
