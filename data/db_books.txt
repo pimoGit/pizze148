@@ -1,0 +1,17 @@
+Creazione Tabella per gestione libri biblioteca
+
+BOOKS (copia fisica presente in biblioteca)
+
+ID
+TITLE
+YEAR
+AUTHOR
+PUBLISHER
+LANGUAGE
+PLOT
+ISBN
+PAGES
+CONDITION
+POSITION
+NOTE
+AGE_RANGE
