@@ -22,12 +22,35 @@ function show(req, res) {
     // recuperiamo l'id dall' URL e trasformiamolo in numero
     const id = req.params.id
 
-    const sql = 'SELECT * FROM pizzas WHERE id = ?';
-    connection.query(sql, [id], (err, results) => {
+    // prima query di rireca della pizza singola
+    const pizzaSql = 'SELECT * FROM pizzas WHERE id = ?';
+
+    // Prepariamo la query per gli ingredienti aiutandoci con una join e Where
+    const ingredientsSql = `
+    SELECT I.*
+    FROM ingredients I
+    JOIN ingredient_pizza AS IP ON I.id = IP.ingredient_id
+    WHERE IP.pizza_id = ? `;
+
+    // Eseguiamo la prima query per la pizza
+    connection.query(pizzaSql, [id], (err, pizzaResults) => {
         if (err) return res.status(500).json({ error: 'Database query failed' });
-        if (results.length === 0) return res.status(404).json({ error: 'Pizza not found' });
-        res.json(results[0]);
+        if (pizzaResults.length === 0) return res.status(404).json({ error: 'Pizza not found' });
+
+        // Recuperiamo la pizza
+        const pizza = pizzaResults[0];
+
+        // Se è andata bene, eseguiamo la seconda query per gli ingredienti
+        connection.query(ingredientsSql, [id], (err, ingredientsResults) => {
+            if (err) return res.status(500).json({ error: 'Database query failed' });
+
+            // Aggoiungiamo gli ingredienti alla pizza
+            pizza.ingredients = ingredientsResults;
+            res.json(pizza);
+        });
     });
+
+
 }
 
 // STORE
