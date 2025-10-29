@@ -20,26 +20,14 @@ function index(req, res) {
 // SHOW
 function show(req, res) {
     // recuperiamo l'id dall' URL e trasformiamolo in numero
-    const id = parseInt(req.params.id)
+    const id = req.params.id
 
-    // cerchiamo il pizza tramite id
-    const pizza = menu.find(pizza => pizza.id === id);
-
-    // Facciamo il controllo
-    if (!pizza) {
-
-        //Imposto lo status 404
-        res.status(404)
-
-        // Restituisco un JSON con le altre informazioni
-        return res.json({
-            error: "Not Found",
-            message: "Pizza non trovata"
-        })
-    }
-
-    // Restituiamolo sotto forma di JSON   
-    res.json(pizza);
+    const sql = 'SELECT * FROM pizzas WHERE id = ?';
+    connection.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        if (results.length === 0) return res.status(404).json({ error: 'Pizza not found' });
+        res.json(results[0]);
+    });
 }
 
 // STORE
@@ -129,31 +117,15 @@ function modify(req, res) {
 
 // DESTROY
 function destroy(req, res) {
-    // recuperiamo l'id dall' URL e trasformiamolo in numero
-    const id = parseInt(req.params.id)
+    // recuperiamo l'id dall' URL 
+    const { id } = req.params;
+    const sql = 'DELETE FROM pizzas WHERE id = ?'
 
-    // cerchiamo il pizza tramite id
-    const pizza = menu.find(pizza => pizza.id === id);
-
-    // Piccolo controllo
-    if (!pizza) {
-        res.status(404);
-
-        return res.json({
-            status: 404,
-            error: "Not Found",
-            message: "Pizza non trovata"
-        })
-    }
-
-    // Rimuoviamo la pizza dal menu
-    menu.splice(menu.indexOf(pizza), 1);
-
-    // aggiungiamo controllo in log
-    console.log(menu);
-
-    // Restituiamo lo status corretto
-    res.sendStatus(204)
+    //Eliminiamo la pizza dal menu                       
+    connection.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Failed to delete pizza' });
+        res.sendStatus(204)
+    });
 }
 
 // esportiamo tutto
