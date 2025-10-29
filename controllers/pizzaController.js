@@ -1,22 +1,20 @@
 // importiamo i dati della risorsa
 const menu = require('../data/menu');
 
+
+// Importiamo il file di connessione al database
+const connection = require('../data/db');
+
 //  INDEX
 function index(req, res) {
-    paperino.get();
-    //Inizialmente, il menu filtrato corrisponde a quello originale
-    let filteredMenu = menu;
+    // prepariamo la query
+    const sql = 'SELECT * FROM pizzas';
 
-    // Se la richiesta contiene un filtro, allora filtriamo il menu
-    if (req.query.ingredient) {
-        filteredMenu = menu.filter(
-            pizza => pizza.ingredients.includes(req.query.ingredient)
-        );
-    }
-
-    // restituiamo la variabile filteredMenu
-    // potrebbe essere stata filtrata o contenere il menu originale
-    res.json(filteredMenu);
+    // eseguiamo la query!
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        res.json(results);
+    });
 }
 
 // SHOW
